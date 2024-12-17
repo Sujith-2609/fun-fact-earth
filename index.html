@@ -21,12 +21,20 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
         }
 
         .fact-box {
             margin: 20px 0;
             font-size: 1.2em;
             color: #333;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .fact-box.visible {
+            opacity: 1;
         }
 
         button {
@@ -42,11 +50,18 @@
         button:hover {
             background-color: #45a049;
         }
+
+        img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Fun Fact Generator</h1>
+        <img src="https://via.placeholder.com/400x200" alt="Planet Image" id="planet-image">
         <div class="fact-box" id="fact-box">
             Click the button to see a fun fact!
         </div>
@@ -54,21 +69,59 @@
     </div>
     <script>
         const facts = [
-            "Mercury is the closest planet to the Sun and has no atmosphere to retain heat.",
-            "Venus is the hottest planet in our solar system due to its thick, toxic atmosphere.",
-            "Earth is the only planet in our solar system known to support life.",
-            "Mars is home to the tallest volcano in the solar system, Olympus Mons.",
-            "Jupiter is the largest planet in our solar system and has a Great Red Spot.",
-            "Saturn is famous for its stunning rings, made mostly of ice particles.",
-            "Uranus rotates on its side, making its axis nearly parallel to the plane of the solar system.",
-            "Neptune has the strongest winds in the solar system.",
-            "Pluto, once considered the ninth planet, is now classified as a dwarf planet.",
-            "Earth's Moon is the fifth largest moon in the solar system and influences Earth's tides."
+            {
+                text: "Mercury is the closest planet to the Sun and has no atmosphere to retain heat.",
+                image: "https://via.placeholder.com/400x200?text=Mercury"
+            },
+            {
+                text: "Venus is the hottest planet in our solar system due to its thick, toxic atmosphere.",
+                image: "https://via.placeholder.com/400x200?text=Venus"
+            },
+            {
+                text: "Earth is the only planet in our solar system known to support life.",
+                image: "https://via.placeholder.com/400x200?text=Earth"
+            },
+            {
+                text: "Mars is home to the tallest volcano in the solar system, Olympus Mons.",
+                image: "https://via.placeholder.com/400x200?text=Mars"
+            },
+            {
+                text: "Jupiter is the largest planet in our solar system and has a Great Red Spot.",
+                image: "https://via.placeholder.com/400x200?text=Jupiter"
+            },
+            {
+                text: "Saturn is famous for its stunning rings, made mostly of ice particles.",
+                image: "https://via.placeholder.com/400x200?text=Saturn"
+            },
+            {
+                text: "Uranus rotates on its side, making its axis nearly parallel to the plane of the solar system.",
+                image: "https://via.placeholder.com/400x200?text=Uranus"
+            },
+            {
+                text: "Neptune has the strongest winds in the solar system.",
+                image: "https://via.placeholder.com/400x200?text=Neptune"
+            },
+            {
+                text: "Pluto, once considered the ninth planet, is now classified as a dwarf planet.",
+                image: "https://via.placeholder.com/400x200?text=Pluto"
+            },
+            {
+                text: "Earth's Moon is the fifth largest moon in the solar system and influences Earth's tides.",
+                image: "https://via.placeholder.com/400x200?text=Moon"
+            }
         ];
 
         function generateFact() {
             const randomIndex = Math.floor(Math.random() * facts.length);
-            document.getElementById('fact-box').innerText = facts[randomIndex];
+            const factBox = document.getElementById('fact-box');
+            const planetImage = document.getElementById('planet-image');
+
+            factBox.classList.remove('visible');
+            setTimeout(() => {
+                factBox.innerText = facts[randomIndex].text;
+                planetImage.src = facts[randomIndex].image;
+                factBox.classList.add('visible');
+            }, 500);
         }
     </script>
 </body>
