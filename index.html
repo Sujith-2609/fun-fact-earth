@@ -3,138 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planet Fun Fact Generator</title>
+    <title>Fun Fact Generator</title>
     <style>
+        /* General Styles */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            color: #333;
+            text-align: center;
+            overflow-x: hidden;
         }
 
-        .container {
-            text-align: center;
-            background-color: #fff;
+        header {
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #ff6f61;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Container Styles */
+        .container {
+            margin: 50px auto;
+            max-width: 600px;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
         }
 
         .fact-box {
-            margin: 20px 0;
-            font-size: 1.2em;
-            color: #333;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            perspective: 1000px;
+            margin: 0 auto;
         }
 
-        .fact-box.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .fact-cube {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            transform-style: preserve-3d;
+            transform: rotateX(0deg) rotateY(0deg);
+            animation: rotateCube 5s infinite linear;
+        }
+
+        .fact-face {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #ff7eb3, #fda085);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 1.2em;
+            backface-visibility: hidden;
+        }
+
+        .fact-face img {
+            max-width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .fact-face:nth-child(1) { transform: rotateY(0deg) translateZ(150px); }
+        .fact-face:nth-child(2) { transform: rotateY(90deg) translateZ(150px); }
+        .fact-face:nth-child(3) { transform: rotateY(180deg) translateZ(150px); }
+        .fact-face:nth-child(4) { transform: rotateY(270deg) translateZ(150px); }
+        .fact-face:nth-child(5) { transform: rotateX(90deg) translateZ(150px); }
+        .fact-face:nth-child(6) { transform: rotateX(-90deg) translateZ(150px); }
+
+        @keyframes rotateCube {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 1em;
-            color: #fff;
-            background-color: #4CAF50;
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            color: white;
+            background-color: #ff6f61;
             border: none;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #e55d50;
+            transform: scale(1.1);
         }
 
-        img {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-        }
-
-        img.visible {
-            opacity: 1;
-            transform: scale(1);
+        footer {
+            margin-top: 50px;
+            padding: 10px 0;
+            background: #fff;
+            color: #666;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Fun Fact Generator</h1>
+    </header>
     <div class="container">
-        <h1>Planet Fun Fact Generator</h1>
-        <img src="https://via.placeholder.com/400x200" alt="Planet Image" id="planet-image">
-        <div class="fact-box" id="fact-box">
-            Click the button to see a fun fact!
+        <div class="fact-box">
+            <div class="fact-cube" id="fact-cube">
+                <div class="fact-face">
+                    <p id="fact-text">Click below to generate a fact!</p>
+                </div>
+                <div class="fact-face">
+                    <img src="https://placekitten.com/300/300" id="fact-image" alt="Fun Fact Image">
+                </div>
+                <div class="fact-face"></div>
+                <div class="fact-face"></div>
+                <div class="fact-face"></div>
+                <div class="fact-face"></div>
+            </div>
         </div>
-        <button onclick="generateFact()">Show Random Fact</button>
+        <button onclick="generateFact()">Show Fun Fact</button>
     </div>
+    <footer>
+        <p>© 2024 Fun Fact Generator | Created with ❤️</p>
+    </footer>
+
     <script>
+        // Array of facts with associated images
         const facts = [
-            {
-                text: "Mercury is the closest planet to the Sun and has no atmosphere to retain heat.",
-                image: "https://via.placeholder.com/400x200?text=Mercury"
-            },
-            {
-                text: "Venus is the hottest planet in our solar system due to its thick, toxic atmosphere.",
-                image: "https://via.placeholder.com/400x200?text=Venus"
-            },
-            {
-                text: "Earth is the only planet in our solar system known to support life.",
-                image: "https://via.placeholder.com/400x200?text=Earth"
-            },
-            {
-                text: "Mars is home to the tallest volcano in the solar system, Olympus Mons.",
-                image: "https://via.placeholder.com/400x200?text=Mars"
-            },
-            {
-                text: "Jupiter is the largest planet in our solar system and has a Great Red Spot.",
-                image: "https://via.placeholder.com/400x200?text=Jupiter"
-            },
-            {
-                text: "Saturn is famous for its stunning rings, made mostly of ice particles.",
-                image: "https://via.placeholder.com/400x200?text=Saturn"
-            },
-            {
-                text: "Uranus rotates on its side, making its axis nearly parallel to the plane of the solar system.",
-                image: "https://via.placeholder.com/400x200?text=Uranus"
-            },
-            {
-                text: "Neptune has the strongest winds in the solar system.",
-                image: "https://via.placeholder.com/400x200?text=Neptune"
-            },
-            {
-                text: "Pluto, once considered the ninth planet, is now classified as a dwarf planet.",
-                image: "https://via.placeholder.com/400x200?text=Pluto"
-            },
-            {
-                text: "Earth's Moon is the fifth largest moon in the solar system and influences Earth's tides.",
-                image: "https://via.placeholder.com/400x200?text=Moon"
-            }
+            { text: "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are still edible.", img: "https://placekitten.com/300/300" },
+            { text: "Octopuses have three hearts, and two of them stop beating when they swim.", img: "https://placekitten.com/301/301" },
+            { text: "Bananas are berries, but strawberries aren't.", img: "https://placekitten.com/302/302" },
+            { text: "A day on Venus is longer than a year on Venus.", img: "https://placekitten.com/303/303" },
+            { text: "Wombat poop is cube-shaped!", img: "https://placekitten.com/304/304" },
+            { text: "Sharks existed before trees did.", img: "https://placekitten.com/305/305" },
+            { text: "A group of flamingos is called a 'flamboyance.'", img: "https://placekitten.com/306/306" },
+            { text: "Cows have best friends and get stressed when separated.", img: "https://placekitten.com/307/307" },
+            { text: "You can't hum while holding your nose closed.", img: "https://placekitten.com/308/308" },
+            { text: "Sloths can hold their breath longer than dolphins.", img: "https://placekitten.com/309/309" },
         ];
 
         function generateFact() {
             const randomIndex = Math.floor(Math.random() * facts.length);
-            const factBox = document.getElementById('fact-box');
-            const planetImage = document.getElementById('planet-image');
+            const fact = facts[randomIndex];
+            document.getElementById("fact-text").textContent = fact.text;
+            document.getElementById("fact-image").src = fact.img;
 
-            factBox.classList.remove('visible');
-            planetImage.classList.remove('visible');
+            // Restart cube rotation animation
+            const cube = document.getElementById("fact-cube");
+            cube.style.animation = "none";
             setTimeout(() => {
-                factBox.innerText = facts[randomIndex].text;
-                planetImage.src = facts[randomIndex].image;
-                factBox.classList.add('visible');
-                planetImage.classList.add('visible');
-            }, 500);
+                cube.style.animation = "";
+            }, 10);
         }
     </script>
 </body>
