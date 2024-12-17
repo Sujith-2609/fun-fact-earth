@@ -30,11 +30,13 @@
             font-size: 1.2em;
             color: #333;
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
 
         .fact-box.visible {
             opacity: 1;
+            transform: translateY(0);
         }
 
         button {
@@ -45,6 +47,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
@@ -55,6 +58,14 @@
             width: 100%;
             border-radius: 8px;
             margin-bottom: 20px;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+
+        img.visible {
+            opacity: 1;
+            transform: scale(1);
         }
     </style>
 </head>
@@ -117,10 +128,12 @@
             const planetImage = document.getElementById('planet-image');
 
             factBox.classList.remove('visible');
+            planetImage.classList.remove('visible');
             setTimeout(() => {
                 factBox.innerText = facts[randomIndex].text;
                 planetImage.src = facts[randomIndex].image;
                 factBox.classList.add('visible');
+                planetImage.classList.add('visible');
             }, 500);
         }
     </script>
